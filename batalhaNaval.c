@@ -1,89 +1,98 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-#define TAMANHO_TABULEIRO 10
-#define TAMANHO_NAVIO 3
+#define tamanho_tabuleiro 10
+#define tamanho_navio 3
+#define tamanho_habilidade 5
+
+
+void aplicar_habilidade(int tabuleiro[tamanho_tabuleiro][tamanho_tabuleiro],
+                        int habilidade[tamanho_habilidade][tamanho_habilidade],
+                        int origem_linha, int origem_coluna) {
+    int offset = tamanho_habilidade / 2;
+    for (int i = 0; i < tamanho_habilidade; i++) {
+        for (int j = 0; j < tamanho_habilidade; j++) {
+            int linha = origem_linha - offset + i;
+            int coluna = origem_coluna - offset + j;
+
+            if (linha >= 0 && linha < tamanho_tabuleiro &&
+                coluna >= 0 && coluna < tamanho_tabuleiro &&
+                habilidade[i][j] == 1 &&
+                tabuleiro[linha][coluna] == 0) {
+                tabuleiro[linha][coluna] = 5;
+            }
+        }
+    }
+}
 
 int main() {
-    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO] = {0};
+    int tabuleiro[tamanho_tabuleiro][tamanho_tabuleiro] = {0};
 
+    int navio_h[tamanho_navio] = {3, 3, 3};
+    int navio_v[tamanho_navio] = {3, 3, 3};
+    int navio_d1[tamanho_navio] = {3, 3, 3}; 
+    int navio_d2[tamanho_navio] = {3, 3, 3};
 
-    int navioH[TAMANHO_NAVIO] = {3, 3, 3};
-    int navioV[TAMANHO_NAVIO] = {3, 3, 3};
-    int navioD1[TAMANHO_NAVIO] = {3, 3, 3}; 
-    int navioD2[TAMANHO_NAVIO] = {3, 3, 3};
+    int linha_h = 2, coluna_h = 1;
+    int linha_v = 5, coluna_v = 4;
+    int linha_d1 = 0, coluna_d1 = 0;
+    int linha_d2 = 0, coluna_d2 = 9;
 
+    for (int i = 0; i < tamanho_navio; i++) {
+        if (coluna_h + tamanho_navio <= tamanho_tabuleiro)
+            tabuleiro[linha_h][coluna_h + i] = navio_h[i];
 
-    int linhaH = 2, colunaH = 1; 
-    int linhaV = 5, colunaV = 4;  
-    int linhaD1 = 0, colunaD1 = 0;     
-    int linhaD2 = 0, colunaD2 = 9;      
+        if (linha_v + tamanho_navio <= tamanho_tabuleiro)
+            tabuleiro[linha_v + i][coluna_v] = navio_v[i];
 
+        if (linha_d1 + tamanho_navio <= tamanho_tabuleiro && coluna_d1 + tamanho_navio <= tamanho_tabuleiro)
+            tabuleiro[linha_d1 + i][coluna_d1 + i] = navio_d1[i];
 
-    if (colunaH + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
-        int podePosicionar = 1;
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linhaH][colunaH + i] != 0) {
-                podePosicionar = 0;
-                break;
-            }
-        }
-        if (podePosicionar) {
-            for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linhaH][colunaH + i] = navioH[i];
-            }
+        if (linha_d2 + tamanho_navio <= tamanho_tabuleiro && coluna_d2 - i >= 0)
+            tabuleiro[linha_d2 + i][coluna_d2 - i] = navio_d2[i];
+    }
+
+    // Habilidade: cone
+    int cone[tamanho_habilidade][tamanho_habilidade] = {0};
+    for (int i = 0; i < tamanho_habilidade; i++) {
+        for (int j = 0; j < tamanho_habilidade; j++) {
+            if (j >= 2 - i && j <= 2 + i && i >= 0)
+                cone[i][j] = 1;
         }
     }
 
-    if (linhaV + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
-        int podePosicionar = 1;
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linhaV + i][colunaV] != 0) {
-                podePosicionar = 0;
-                break;
-            }
-        }
-        if (podePosicionar) {
-            for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linhaV + i][colunaV] = navioV[i];
-            }
+    // Habilidade: cruz
+    int cruz[tamanho_habilidade][tamanho_habilidade] = {0};
+    for (int i = 0; i < tamanho_habilidade; i++) {
+        for (int j = 0; j < tamanho_habilidade; j++) {
+            if (i == tamanho_habilidade / 2 || j == tamanho_habilidade / 2)
+                cruz[i][j] = 1;
         }
     }
 
-
-    if (linhaD1 + TAMANHO_NAVIO <= TAMANHO_TABULEIRO && colunaD1 + TAMANHO_NAVIO <= TAMANHO_TABULEIRO) {
-        int podePosicionar = 1;
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linhaD1 + i][colunaD1 + i] != 0) {
-                podePosicionar = 0;
-                break;
-            }
-        }
-        if (podePosicionar) {
-            for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linhaD1 + i][colunaD1 + i] = navioD1[i];
-            }
+    // Habilidade: octaedro
+    int octaedro[tamanho_habilidade][tamanho_habilidade] = {0};
+    for (int i = 0; i < tamanho_habilidade; i++) {
+        for (int j = 0; j < tamanho_habilidade; j++) {
+            if (abs(i - 2) + abs(j - 2) <= 2)
+                octaedro[i][j] = 1;
         }
     }
 
-    if (linhaD2 + TAMANHO_NAVIO <= TAMANHO_TABULEIRO && colunaD2 - (TAMANHO_NAVIO - 1) >= 0) {
-        int podePosicionar = 1;
-        for (int i = 0; i < TAMANHO_NAVIO; i++) {
-            if (tabuleiro[linhaD2 + i][colunaD2 - i] != 0) {
-                podePosicionar = 0;
-                break;
-            }
-        }
-        if (podePosicionar) {
-            for (int i = 0; i < TAMANHO_NAVIO; i++) {
-                tabuleiro[linhaD2 + i][colunaD2 - i] = navioD2[i];
-            }
-        }
-    }
+    aplicar_habilidade(tabuleiro, cone, 4, 2);
+    aplicar_habilidade(tabuleiro, cruz, 6, 6);
+    aplicar_habilidade(tabuleiro, octaedro, 7, 2);
 
-    printf("\nTabuleiro de Batalha Naval:\n\n");
-    for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
-        for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-            printf("%d ", tabuleiro[i][j]);
+    // Exibir o tabuleiro
+    printf("\nTabuleiro de Batalha Naval com Habilidades:\n\n");
+    for (int i = 0; i < tamanho_tabuleiro; i++) {
+        for (int j = 0; j < tamanho_tabuleiro; j++) {
+            if (tabuleiro[i][j] == 0)
+                printf("0 ");
+            else if (tabuleiro[i][j] == 3)
+                printf("3 ");
+            else if (tabuleiro[i][j] == 5)
+                printf("5 ");
         }
         printf("\n");
     }
