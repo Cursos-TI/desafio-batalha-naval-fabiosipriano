@@ -202,6 +202,6 @@ int main(){
     }
     //mostrando na tela
     mostrarTabuleiro(tabuleiro);
-    printf("\nLegenda: 0. Água 3.Navio");    
+    printf("\nLegenda: 0. Água 3.Navio\n");    
     return 0;
 }
