@@ -120,7 +120,7 @@ int main(){
 
         printf("Colocando navio no tabuleiro: \n");
         do{
-            printf("Escolha um numero de 1 a 10 para a linha da posição inicial do primeiro navio: \n");
+            printf("Escolha um numero de 1 a 10 para a linha da posição inicial do navio: \n");
             scanf("%d", &navios[numeronavio][0]);
             navios[numeronavio][0]--;
             if((navios[numeronavio][0]<0) || (navios[numeronavio][0]>9)){
@@ -128,7 +128,7 @@ int main(){
             }
         }while ((navios[numeronavio][0]<0) || (navios[numeronavio][0]>9));
         do{
-            printf("Escolha um numero de 1 a 10 para a coluna da posição inicial do primeiro navio: \n");
+            printf("Escolha um numero de 1 a 10 para a coluna da posição inicial do navio: \n");
             scanf("%d", &navios[numeronavio][1]);
             navios[numeronavio][1]--;
             if((navios[numeronavio][1]<0) || (navios[numeronavio][1]>9)){
@@ -136,14 +136,14 @@ int main(){
             }
         }while ((navios[numeronavio][1]<0) || (navios[numeronavio][1]>9));
         do{
-            printf("Escolha um numero de 1 a 4 para o tamanho do primeiro navio: \n");
+            printf("Escolha um numero de 1 a 4 para o tamanho do navio: \n");
             scanf("%d", &navios[numeronavio][2]);
             if((navios[numeronavio][2]<1) || (navios[numeronavio][2]>4)){
                 printf("\nO valor escolhido é inválido!");
             }
         }while ((navios[numeronavio][2]<1) || (navios[numeronavio][2]>4));
         do{
-            printf("Escolha se o primeiro navio será posicionado na vertical, horizontal ou nas diagonais: \n1. Para vertical\n2. Para horizontal\n3. Para vertical baixo\n4. Para vertical cima\n");
+            printf("Escolha se o navio será posicionado na vertical, horizontal ou nas diagonais: \n1. Para vertical\n2. Para horizontal\n3. Para vertical baixo\n4. Para vertical cima\n");
             scanf("%d", &navios[numeronavio][3]);
             if((navios[numeronavio][3]<1) || (navios[numeronavio][3]>4)){
                 printf("\nO valor escolhido é inválido!");
