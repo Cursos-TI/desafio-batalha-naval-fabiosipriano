@@ -1,101 +1,243 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define tamanho_tabuleiro 10
-#define tamanho_navio 3
-#define tamanho_habilidade 5
-
-
-void aplicar_habilidade(int tabuleiro[tamanho_tabuleiro][tamanho_tabuleiro],
-                        int habilidade[tamanho_habilidade][tamanho_habilidade],
-                        int origem_linha, int origem_coluna) {
-    int offset = tamanho_habilidade / 2;
-    for (int i = 0; i < tamanho_habilidade; i++) {
-        for (int j = 0; j < tamanho_habilidade; j++) {
-            int linha = origem_linha - offset + i;
-            int coluna = origem_coluna - offset + j;
-
-            if (linha >= 0 && linha < tamanho_tabuleiro &&
-                coluna >= 0 && coluna < tamanho_tabuleiro &&
-                habilidade[i][j] == 1 &&
-                tabuleiro[linha][coluna] == 0) {
-                tabuleiro[linha][coluna] = 5;
-            }
+void criarTabuleiro(int tabuleiro[10][10]){
+    for (int i=0; i<10; i++){
+        for(int j=0; j<10; j++){
+            tabuleiro[i][j] = 0;
         }
     }
 }
 
-int main() {
-    int tabuleiro[tamanho_tabuleiro][tamanho_tabuleiro] = {0};
+void testarSobreposicao(int ){
 
-    int navio_h[tamanho_navio] = {3, 3, 3};
-    int navio_v[tamanho_navio] = {3, 3, 3};
-    int navio_d1[tamanho_navio] = {3, 3, 3}; 
-    int navio_d2[tamanho_navio] = {3, 3, 3};
+}
 
-    int linha_h = 2, coluna_h = 1;
-    int linha_v = 5, coluna_v = 4;
-    int linha_d1 = 0, coluna_d1 = 0;
-    int linha_d2 = 0, coluna_d2 = 9;
+void posicionarNavioVertical(int ){
 
-    for (int i = 0; i < tamanho_navio; i++) {
-        if (coluna_h + tamanho_navio <= tamanho_tabuleiro)
-            tabuleiro[linha_h][coluna_h + i] = navio_h[i];
+}
 
-        if (linha_v + tamanho_navio <= tamanho_tabuleiro)
-            tabuleiro[linha_v + i][coluna_v] = navio_v[i];
+void posicionarNavioHorizontal(int ){
 
-        if (linha_d1 + tamanho_navio <= tamanho_tabuleiro && coluna_d1 + tamanho_navio <= tamanho_tabuleiro)
-            tabuleiro[linha_d1 + i][coluna_d1 + i] = navio_d1[i];
+}
 
-        if (linha_d2 + tamanho_navio <= tamanho_tabuleiro && coluna_d2 - i >= 0)
-            tabuleiro[linha_d2 + i][coluna_d2 - i] = navio_d2[i];
-    }
+void posicionarNavioVerticalCima(int ){
 
-    // Habilidade: cone
-    int cone[tamanho_habilidade][tamanho_habilidade] = {0};
-    for (int i = 0; i < tamanho_habilidade; i++) {
-        for (int j = 0; j < tamanho_habilidade; j++) {
-            if (j >= 2 - i && j <= 2 + i && i >= 0)
-                cone[i][j] = 1;
+}
+
+void posicionarNavioVerticalBaixo(int ){
+    
+}
+
+int main(){
+    //declaração de variaveis
+    int tabuleiro [10][10];
+    int navios[4][4], navio_2[4], teste;
+    int i, j, condicao = 0, numeronavio;
+    int aux, soma, testesobreposicao = 0;
+    //preencher o tabuleiro
+    criartabuleiro(tabuleiro);
+    
+    //cadastrando dados dos navios, com máximo de 4 navios.
+    
+    condicao = 0;
+    numeronavio = 0;
+
+    while(condicao == 0){
+
+        printf("Colocando o primeiro navio no tabuleiro: \n");
+        do{
+            printf("Escolha um numero de 1 a 10 para a linha da posição inicial do primeiro navio: \n");
+            scanf("%d", &navios[numeronavio][0]);
+            navios[numeronavio][0]--;
+            if((navios[numeronavio][0]<0) || (navios[numeronavio][0]>9)){
+                printf("\nO valor escolhido é inválido!");
+            }
+        }while ((navios[numeronavio][0]<0) || (navios[numeronavio][0]>9));
+        do{
+            printf("Escolha um numero de 1 a 10 para a coluna da posição inicial do primeiro navio: \n");
+            scanf("%d", &navios[numeronavio][1]);
+            navios[numeronavio][1]--;
+            if((navios[numeronavio][1]<0) || (navios[numeronavio][1]>9)){
+                printf("\nO valor escolhido é inválido!");
+            }
+        }while ((navios[numeronavio][1]<0) || (navios[numeronavio][1]>9));
+        do{
+            printf("Escolha um numero de 1 a 4 para o tamanho do primeiro navio: \n");
+            scanf("%d", &navios[numeronavio][2]);
+            if((navios[numeronavio][2]<1) || (navios[numeronavio][2]>4)){
+                printf("\nO valor escolhido é inválido!");
+            }
+        }while ((navios[numeronavio][2]<1) || (navios[numeronavio][2]>4));
+        do{
+            printf("Escolha se o primeiro navio será posicionado na vertical, horizontal ou nas diagonais: \n1. Para vertical\n2. Para horizontal\n3. Para vertical baixo\n4. Para vertical cima\n");
+            scanf("%d", &navios[numeronavio][3]);
+            if((navios[numeronavio][3]<1) || (navios[numeronavio][3]>4)){
+                printf("\nO valor escolhido é inválido!");
+            }
+        }while((navios[numeronavio][3]<1) || (navios[numeronavio][3]>4));
+
+        //testando se o navio cabe dentro do tabuleiro
+        switch (navios[numeronavio][3]){
+            case 1:
+                if (navios[numeronavio][0]+navios[numeronavio][2]>10){
+                    teste = 0;
+                } else {
+                    teste = 1;
+                }
+            break;
+            case 2:
+                if (navios[numeronavio][1]+navios[numeronavio][2]>10){
+                    teste = 0;
+                } else {
+                    teste = 1;
+                }
+            break;
+            case 3:
+                if (navios[numeronavio][0]+navios[numeronavio][2]>10 || (navios[numeronavio][1]+navios[numeronavio][2])){
+                    teste = 0;
+                } else {
+                    teste = 1;
+                }
+            break;
+            case 4:
+                if ((navios[numeronavio][0]-navios[numeronavio][2]<0) || (navios[numeronavio][1]+navios[numeronavio][2]>10)){
+                    teste = 0;
+                } else {
+                    teste = 1;
+                }
+
+            break;
+        default:
+            break;
+        }
+        if (navio_1[2] == 1){
+            if (navio_1[0]+navio_1[1]>10){
+                printf("As condições selecionadas para o navio deixam ele fora do tabuleiro (10x10). Por favor escolha opções válidas!");
+                teste = 0;
+            }else{
+                teste = 1;
+            } 
+        }else{
+            if (navio_1[3]+navio_1[1]>10){
+                printf("As condições selecionadas para o navio deixam ele fora do tabuleiro (10x10). Por favor escolha opções válidas!");
+                teste = 0;
+            }else{
+                teste = 1;
+            }
+        }
+        if (teste == 1){
+            condicao = 1;
         }
     }
-
-    // Habilidade: cruz
-    int cruz[tamanho_habilidade][tamanho_habilidade] = {0};
-    for (int i = 0; i < tamanho_habilidade; i++) {
-        for (int j = 0; j < tamanho_habilidade; j++) {
-            if (i == tamanho_habilidade / 2 || j == tamanho_habilidade / 2)
-                cruz[i][j] = 1;
+    //colocando o primeiro navio no tabuleiro
+    if (navio_1[2] == 1){
+        soma = 0;
+        for (i=1; i<=navio_1[1];i++){
+            aux = navio_1[0] + soma;
+            tabuleiro[aux][navio_1[3]] = 3;
+            soma++;
+        }
+    }else{
+        soma = 0;
+        for (i=1; i<=navio_1[1];i++){
+            aux = navio_1[3] + soma;
+            tabuleiro[navio_1[0]][aux] = 3;
+            soma++;
         }
     }
+    //cadastrando dados do segundo navio
+    condicao = 0;
+    while(condicao == 0){
+        printf("\nColocando o segundo navio no tabuleiro: \n");
+        do{
+            printf("Escolha um numero de 1 a 10 para a linha posição inicial do segundo navio: \n");
+            scanf("%d", &navio_2[0]);
+            navio_2[0]--;
+        }while ((navio_2[0]<0) || (navio_2[0]>9));
+        do{
+            printf("Escolha um numero de 1 a 10 para a coluna da posição  inicial do segundo navio: \n");
+            scanf("%d", &navio_2[3]);
+            navio_2[3]--;
+        }while ((navio_2[3]<0) || (navio_2[3]>9));
+        do{
+            printf("Escolha um numero de 1 a 4 para o tamanho do segundo navio: \n");
+            scanf("%d", &navio_2[1]);
+        }while ((navio_2[1]<1) || (navio_2[1]>4));
+        do{
+            printf("Escolha se o segundo navio será posicionado na vertical ou horizontal: \n1. Para vertical\n2. Para horizontal\n");
+            scanf("%d", &navio_2[2]);
+        }while((navio_2[2]<1) || (navio_2[2]>2));
+            if (navio_2[2] == 1){
+                if (navio_2[0]+navio_2[1]>10){
+                    printf("As condições selecionadas para o navio deixam ele fora do tabuleiro (10x10). Por favor escolha opções válidas!");
+                    teste = 0;
+                }else{
+                    teste = 1;
+                } 
 
-    // Habilidade: octaedro
-    int octaedro[tamanho_habilidade][tamanho_habilidade] = {0};
-    for (int i = 0; i < tamanho_habilidade; i++) {
-        for (int j = 0; j < tamanho_habilidade; j++) {
-            if (abs(i - 2) + abs(j - 2) <= 2)
-                octaedro[i][j] = 1;
+            }else{
+                if (navio_2[3]+navio_2[1]>10){
+                    printf("As condições selecionadas para o navio deixam ele fora do tabuleiro (10x10). Por favor escolha opções válidas!");
+                    teste = 0;
+                }else{
+                    teste = 1;
+                }
+            }
+                
+        //testando se os navios não se sobrepoem
+        if (navio_2[2] == 1){
+            soma = 0;
+            for (i=1; i<=navio_2[1];i++){
+                aux = navio_2[0] + soma;
+                if(tabuleiro[aux][navio_2[3]] == 3){
+                    testesobreposicao = 1;
+                }
+                soma++;
+            }
+        }else{
+            soma = 0;
+            for (i=1; i<=navio_2[1];i++){
+                aux = navio_2[3] + soma;
+                if(tabuleiro[navio_2[0]][aux] == 3){
+                    testesobreposicao = 1;
+                }
+                soma++;
+            }
+
+        }
+        if (testesobreposicao == 1){
+            printf("O segundo navio não pode ser sobreposto em outro navio já posicionado! Escolha outra posição.");
+        }
+        if ((teste == 1) && testesobreposicao == 0){
+            condicao = 1;
         }
     }
-
-    aplicar_habilidade(tabuleiro, cone, 4, 2);
-    aplicar_habilidade(tabuleiro, cruz, 6, 6);
-    aplicar_habilidade(tabuleiro, octaedro, 7, 2);
-
-    // Exibir o tabuleiro
-    printf("\nTabuleiro de Batalha Naval com Habilidades:\n\n");
-    for (int i = 0; i < tamanho_tabuleiro; i++) {
-        for (int j = 0; j < tamanho_tabuleiro; j++) {
-            if (tabuleiro[i][j] == 0)
-                printf("0 ");
-            else if (tabuleiro[i][j] == 3)
-                printf("3 ");
-            else if (tabuleiro[i][j] == 5)
-                printf("5 ");
+    //colocando o segundo navio no tabuleiro
+    if (navio_2[2] == 1){
+        soma = 0;
+        for (i=1; i<=navio_2[1];i++){
+            aux = navio_2[0] + soma;
+            tabuleiro[aux][navio_2[3]] = 3;
+            soma++;
         }
+    }else{
+        soma = 0;
+        for (i=1; i<=navio_2[1];i++){
+            aux = navio_2[3] + soma;
+            tabuleiro[navio_2[0]][aux] = 3;
+            soma++;
+        }
+    }
+    //mostrando na tela
+    for (i=0; i<10; i++){
         printf("\n");
-    }
+        for(j=0; j<10; j++){
+            printf("%d, ", tabuleiro[i][j]);
+        }
+        
+    }    
 
     return 0;
+
 }
