@@ -9,16 +9,16 @@ void criarTabuleiro(int tabuleiro[10][10]){
     }
 }
 
-void testarSobreposicao(int tabuleiro[10][10], int posicaoL, int posicaoC, int tamanho, int lado, int validacao){
+void testarSobreposicao(int tabuleiro[10][10], int posicaoL, int posicaoC, int tamanho, int lado, int *validacao){
     switch(lado){
         case 1:
             for (int i=1; i<=tamanho; i++){
                 if (tabuleiro[posicaoL][posicaoC] == 0){
                     posicaoL++;
                 } else {
-                    printf("A posição selecionada está ocupada por outro navio!");
+                    printf("A posição selecionada está ocupada por outro navio!\n");
                     posicaoL++;
-                    validacao = 0;
+                    *validacao = 0;
                 }
             }
         break;
@@ -27,9 +27,9 @@ void testarSobreposicao(int tabuleiro[10][10], int posicaoL, int posicaoC, int t
                 if (tabuleiro[posicaoL][posicaoC] == 0){
                     posicaoC++;
                 } else {
-                    printf("A posição selecionada está ocupada por outro navio!");
+                    printf("A posição selecionada está ocupada por outro navio!\n");
                     posicaoC++;
-                    validacao = 0;
+                    *validacao = 0;
                 }
             }
         break;
@@ -39,10 +39,10 @@ void testarSobreposicao(int tabuleiro[10][10], int posicaoL, int posicaoC, int t
                     posicaoL++;
                     posicaoC++;
                 } else {
-                    printf("A posição selecionada está ocupada por outro navio!");
+                    printf("A posição selecionada está ocupada por outro navio!\n");
                     posicaoL++;
                     posicaoC++;
-                    validacao = 0;
+                    *validacao = 0;
                 }
             }
         break;
@@ -52,10 +52,10 @@ void testarSobreposicao(int tabuleiro[10][10], int posicaoL, int posicaoC, int t
                     posicaoL--;
                     posicaoC++;
                 } else {
-                    printf("A posição selecionada está ocupada por outro navio!");
+                    printf("A posição selecionada está ocupada por outro navio!\n");
                     posicaoL--;
                     posicaoC++;
-                    validacao = 0;
+                    *validacao = 0;
                 }
             }
         break;
@@ -167,7 +167,7 @@ int main(){
                 }
             break;
             case 3:
-                if (navios[numeronavio][0]+navios[numeronavio][2]>10 || (navios[numeronavio][1]+navios[numeronavio][2])){
+                if (navios[numeronavio][0]+navios[numeronavio][2]>10 || (navios[numeronavio][1]+navios[numeronavio][2]>10)){
                     teste = 0;
                 } else {
                     teste = 1;
@@ -182,26 +182,26 @@ int main(){
             break;
         }
         if (teste == 0){
-            printf("As condições selecionadas deixam esse navio fora do tabuleiro");
+            printf("As condições selecionadas deixam esse navio fora do tabuleiro\n");
         } else {
             //chamar função de teste de sobreposição de navios
             testesobreposicao = 1;
-            testarSobreposicao(tabuleiro, navios[numeronavio][0], navios[numeronavio][1], navios[numeronavio][2], navios[numeronavio][3], testesobreposicao);
+            testarSobreposicao(tabuleiro, navios[numeronavio][0], navios[numeronavio][1], navios[numeronavio][2], navios[numeronavio][3], &testesobreposicao);
             if (testesobreposicao == 1){
                 posicionarNavio(tabuleiro, navios[numeronavio][0], navios[numeronavio][1], navios[numeronavio][2], navios[numeronavio][3]);
                 numeronavio++;
                 if (numeronavio<4){
-                    printf("O navio foi adicionado com sucesso, insira mais um navio.");
+                    printf("O navio foi adicionado com sucesso, insira mais um navio.\n");
                 } else {
-                    printf("Parabens, você adicionou 4 navios no tabuleiro com sucesso.");
+                    printf("Parabens, você adicionou 4 navios no tabuleiro com sucesso.\n");
                 }
             } else {
-                printf("O navio não foi posicionado devido a problema de sobreposição. Insira os dados novamente");
+                printf("O navio não foi posicionado devido a problema de sobreposição. Insira os dados novamente\n");
             }
         }
     }
     //mostrando na tela
     mostrarTabuleiro(tabuleiro);
-    printf("\nLegenda: 0. Água 3.Navio\n");    
+    printf("\n\nLegenda: 0. Água 3.Navio\n\n");    
     return 0;
 }
