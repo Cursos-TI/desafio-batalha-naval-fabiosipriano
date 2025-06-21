@@ -93,7 +93,6 @@ void posicionarNavio(int tabuleiro[10][10], int posicaoL, int posicaoC, int tama
     }
 }
 
-
 void mostrarTabuleiro(int tabuleiro[10][10]){
     for (int i=0; i<10; i++){
         printf("\n");
@@ -105,6 +104,44 @@ void mostrarTabuleiro(int tabuleiro[10][10]){
 
 //funções de ataques especiais
 void especialCone (int tabuleiro[10][10], int ataqueL, int ataqueC){
+    //marca a primeira linha do cone
+    if (ataqueL-1>=0){
+        if ((tabuleiro[ataqueL-1][ataqueC] == 0) || (tabuleiro[ataqueL-1][ataqueC] == 5)){
+            tabuleiro[ataqueL-1][ataqueC] = 5;
+        } else if (tabuleiro[ataqueL-1][ataqueC] == 3){
+            tabuleiro[ataqueL-1][ataqueC] = 7;
+        }
+    }
+    //marca a segunda linha do cone
+    int contador = -1;
+    for (int i=1; i<=3; i++){
+        if ((ataqueC+contador>=0) && (ataqueC+contador<=9)){
+            if ((tabuleiro[ataqueL][ataqueC+contador] == 0) || (tabuleiro[ataqueL][ataqueC+contador] == 5)){
+                tabuleiro[ataqueL][ataqueC+contador] = 5;
+                contador++;
+            } else if (tabuleiro[ataqueL][ataqueC+contador] == 3){
+                tabuleiro[ataqueL][ataqueC+contador] = 7;
+                contador++;
+            }
+        } else {
+            contador++;
+        }
+    }
+    //marca a terceira linha do cone
+    contador = -2;
+    for (int i=1; i<=5; i++){
+        if ((ataqueL+1<=9) && (ataqueC+contador>=0) && (ataqueC+contador<=9)){
+            if ((tabuleiro[ataqueL+1][ataqueC+contador] == 0) || (tabuleiro[ataqueL+1][ataqueC+contador] == 5)){
+                tabuleiro[ataqueL+1][ataqueC+contador] = 5;
+                contador++;
+            } else if (tabuleiro[ataqueL+1][ataqueC+contador] == 3){
+                tabuleiro[ataqueL+1][ataqueC+contador] = 7;
+                contador++;
+            }
+        } else {
+            contador++;
+        }
+    }
 
 }
 
@@ -180,7 +217,67 @@ void especialCruz (int tabuleiro[10][10], int ataqueL, int ataqueC){
 }
 
 void especialOctaedro (int tabuleiro[10][10], int ataqueL, int ataqueC){
-
+    //marca a primeira linha do octaedro
+    if (ataqueL-2>=0){
+        if ((tabuleiro[ataqueL-2][ataqueC] == 0) || (tabuleiro[ataqueL-2][ataqueC] == 5)){
+            tabuleiro[ataqueL-2][ataqueC] = 5;
+        } else if (tabuleiro[ataqueL-2][ataqueC] == 3){
+            tabuleiro[ataqueL-2][ataqueC] = 7;
+        }
+    }
+    //marca a segunda linha do octaedro
+    int contador = -1;
+    for (int i=1; i<=3; i++){
+        if ((ataqueC+contador>=0) && (ataqueC+contador<=9) && (ataqueL-1>=0)){
+            if ((tabuleiro[ataqueL-1][ataqueC+contador] == 0) || (tabuleiro[ataqueL-1][ataqueC+contador] == 5)){
+                tabuleiro[ataqueL-1][ataqueC+contador] = 5;
+                contador++;
+            } else if (tabuleiro[ataqueL-1][ataqueC+contador] == 3){
+                tabuleiro[ataqueL-1][ataqueC+contador] = 7;
+                contador++;
+            }
+        } else {
+            contador++;
+        }
+    }
+    //marca a terceira linha do octaedro
+    contador = -2;
+    for (int i=1; i<=5; i++){
+        if ((ataqueC+contador>=0) && (ataqueC+contador<=9)){
+            if ((tabuleiro[ataqueL][ataqueC+contador] == 0) || (tabuleiro[ataqueL][ataqueC+contador] == 5)){
+                tabuleiro[ataqueL][ataqueC+contador] = 5;
+                contador++;
+            } else if (tabuleiro[ataqueL][ataqueC+contador] == 3){
+                tabuleiro[ataqueL][ataqueC+contador] = 7;
+                contador++;
+            }
+        } else {
+            contador++;
+        }
+    }
+    //marca a quarta linha do octaedro
+    contador = -1;
+    for (int i=1; i<=3; i++){
+        if ((ataqueC+contador>=0) && (ataqueC+contador<=9) && (ataqueL+1<=9)){
+            if ((tabuleiro[ataqueL+1][ataqueC+contador] == 0) || (tabuleiro[ataqueL+1][ataqueC+contador] == 5)){
+                tabuleiro[ataqueL+1][ataqueC+contador] = 5;
+                contador++;
+            } else if (tabuleiro[ataqueL+1][ataqueC+contador] == 3){
+                tabuleiro[ataqueL+1][ataqueC+contador] = 7;
+                contador++;
+            }
+        } else {
+            contador++;
+        }
+    }
+    //marca a quinta linha do octaedro
+    if (ataqueL+2<=9){
+        if ((tabuleiro[ataqueL+2][ataqueC] == 0) || (tabuleiro[ataqueL+2][ataqueC] == 5)){
+            tabuleiro[ataqueL+2][ataqueC] = 5;
+        } else if (tabuleiro[ataqueL+2][ataqueC] == 3){
+            tabuleiro[ataqueL+2][ataqueC] = 7;
+        }
+    }
 }
 
 int main(){
